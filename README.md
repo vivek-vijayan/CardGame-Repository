@@ -1,2 +1,2 @@
 # CardGame
-CardGame with Mom&amp;Dad - Django Application
+CardGame Python Application
