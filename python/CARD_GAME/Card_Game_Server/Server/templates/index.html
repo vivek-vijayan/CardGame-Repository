@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamePlay</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+        crossorigin="anonymous"></script>
+</head>
+<style>
+    .scorebutton {
+        transform: scale(1);
+        opacity: 0.2;
+        transition: ease-in-out 0.51s;
+    }
+
+    .scorebutton:hover {
+        transform: scale(1.1);
+        opacity: 1;
+        transition: ease-in-out 0.51s;
+    }
+</style>
+
+<body background="{% static 'cardsbg.png' %}" style="background-repeat: no-repeat; background-size: 125%;">
+    <div class="container" style="padding-top: 100px;">
+        <div class="row">
+            <div class="col-sm-3">
+                <!-- blank space -->
+            </div>
+            <div class="col-sm-9">
+                <h1
+                    style="color: rgb(253, 205, 146); padding-left: 30px; padding-top: 10px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                    Card Game</h1>
+                <br>
+                <div class="row">
+                    <div class="col-sm-4" style="color: rgb(255, 186, 102);">
+                        Winners
+                    </div>
+                    <div class="col-sm-5" style="margin-left: 20px; color: rgb(255, 186, 102);">
+                        Score Board
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4"
+                        style="border: 5px solid rgb(255, 186, 102); border-radius: 20px; padding: 10px; margin: 10px;">
+                        <h2
+                            style="color: rgb(255, 237, 214); padding-left: 30px; padding-top: 10px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                            <table>
+                                {% for x in players %}
+                                <tr>
+                                    <td>
+                                        <span style="padding-left: 10px;">{{ x.playerName }}</span>
+                                    </td>
+                                    <td>
+                                        <span style="position: static; padding-left: 50px;"> ⭐️ x {{ x.Star }} </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                    </div>
+                    <div class="col-sm-6"
+                        style="border: 5px solid rgb(255, 186, 102); border-radius: 20px; padding: 10px; margin: 10px;">
+                        <h2
+                            style="color: rgb(255, 237, 214); padding-left: 30px; padding-top: 10px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                            <table>
+                                {% for x in gameplayPlayerwise %}
+                                <tr>
+                                    <td>
+                                        <span style="padding-left: 10px;"></span>
+                                    </td>
+                                    <td>
+                                        <span style="position: static; padding-left: 20px; padding-right: 50px;"> ⛳️
+                                            {{ x.total }}</span>
+                                    </td>
+                                    {% if gameActive %}
+                                    <td class="scorebutton"> Scored :
+                                        <span><a
+                                                href="http://localhost:8000/game/{{gameid}}/{{x.playerID}}/1/{{ x.total }}">1️⃣</a></span>
+                                        <span><a
+                                                href="http://localhost:8000/game/{{gameid}}/{{x.playerID}}/2/{{ x.total }}">2️⃣</a></span>
+                                        <span><a
+                                                href="http://localhost:8000/game/{{gameid}}/{{x.playerID}}/4/{{ x.total }}">4️⃣</a></span>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-11"
+                        style="border: 0px solid rgb(255, 186, 102); border-radius: 20px; padding-top: 15px; padding-bottom: 10px; margin: 10px;">
+                        {% if gameActive %}
+                        <h4 style="color: rgb(255, 221, 180);">
+                            {{lastWinnerName}} won the last match with {{lastWinnerScore}} score 🎉
+                        </h4>
+                        {% else %}
+                        <h2 style="color: rgb(253, 174, 84);">⚜️ GAME OVER⚜️ </h2>
+                        <h4 style="color: rgb(255, 221, 180);">
+                            🎉 {{lastWinnerName}} won this series 🎉
+                        </h4>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row" style="color: rgb(255, 167, 52);font-size: 30;">
+                            <div class="col-sm-4">
+                                <h3>PLAY SEQ</h3>
+                            </div>
+                            <div class="col-sm-4">
+                                <h3>PLAYER</h3>
+                            </div>
+                            <div class="col-sm-4">
+                                <h3>SCORE</h3>
+                            </div>
+                        </div>
+                        {% for x in gameflow %}
+                        <div class="row" style="color: antiquewhite;font-size: 30;">
+                            <div class="col-sm-4">
+                                <h3>{{ x.gameplayID }}</h3>
+                            </div>
+                            <div class="col-sm-4">
+                                <h3>{{ x.playerID }}</h3>
+                            </div>
+                            <div class="col-sm-4">
+                                <h3>{{ x.score }}</h3>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
