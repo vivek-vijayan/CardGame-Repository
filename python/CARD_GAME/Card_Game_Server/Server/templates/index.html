@@ -31,9 +31,34 @@
         opacity: 1;
         transition: ease-in-out 0.51s;
     }
+
+    .highlight{
+        animation: jump 1s infinite;
+        color: red;
+        font-size: 20px;
+        background-color: white;
+        border: none;
+        border-radius: 20px;
+        width: 200px;
+    }
+    @keyframes jump {
+        0%{
+            background-color: red;
+            color: white;
+        }
+        50%{
+            background-color: white;
+            color: red;
+        }
+        100%{
+            background-color: red;
+            color: white;
+        }
+    }
+
 </style>
 
-<body background="{% static 'cardsbg.png' %}" style="background-repeat: no-repeat; background-size: 125%;">
+<body background="{% static 'cardsbg.png' %}" onload="startTimer()" style="background-repeat: no-repeat; background-size: 125%;">
     <div class="container" style="padding-top: 100px;">
         <div class="row">
             <div class="col-sm-3">
@@ -42,7 +67,10 @@
             <div class="col-sm-9">
                 <h1
                     style="color: rgb(253, 205, 146); padding-left: 30px; padding-top: 10px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
-                    Card Game</h1>
+                    Card Game   </h1>
+                    <h4 style="color: white; padding-left: 30px;"> ⏱ <span id="stopwatch">
+                        00:00:00
+                    </span></h4>
                 <br>
                 <div class="row">
                     <div class="col-sm-4" style="color: rgb(255, 186, 102);">
@@ -106,7 +134,13 @@
                         {% if gameActive %}
                         <h4 style="color: rgb(255, 221, 180);">
                             {{lastWinnerName}} won the last match with {{lastWinnerScore}} score 🎉
+                        
+                        {% if isHat %}
+                        <button class="highlight">
+                            On HatTrick
+                        </button>
                         </h4>
+                        {% endif %}
                         {% else %}
                         <h2 style="color: rgb(253, 174, 84);">⚜️ GAME OVER⚜️ </h2>
                         <h4 style="color: rgb(255, 221, 180);">
@@ -147,5 +181,62 @@
         </div>
     </div>
 </body>
+<script>
+    const timer = document.getElementById('stopwatch');
 
+        var hr = 0;
+        var min = 0;
+        var sec = 0;
+        var stoptime = true;
+
+        function startTimer() {
+            if (stoptime == true) {
+                stoptime = false;
+                timerCycle();
+            }
+        }
+        function stopTimer() {
+            if (stoptime == false) {
+                stoptime = true;
+            }
+        }
+
+        function timerCycle() {
+            if (stoptime == false) {
+                sec = parseInt(sec);
+                min = parseInt(min);
+                hr = parseInt(hr);
+
+                sec = sec + 1;
+
+                if (sec == 60) {
+                    min = min + 1;
+                    sec = 0;
+                }
+                if (min == 60) {
+                    hr = hr + 1;
+                    min = 0;
+                    sec = 0;
+                }
+
+                if (sec < 10 || sec == 0) {
+                    sec = '0' + sec;
+                }
+                if (min < 10 || min == 0) {
+                    min = '0' + min;
+                }
+                if (hr < 10 || hr == 0) {
+                    hr = '0' + hr;
+                }
+
+                timer.innerHTML = hr + ':' + min + ':' + sec;
+
+                setTimeout("timerCycle()", 1000);
+            }
+        }
+
+        function resetTimer() {
+            timer.innerHTML = '00:00:00';
+        }
+</script>
 </html>
