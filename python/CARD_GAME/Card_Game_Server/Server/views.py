@@ -22,7 +22,19 @@ def homepage(request, gameid):
         lastgameWinnerName = x.playerID
 
     gameflow = GamePlay.objects.all().order_by('-gameplayID')[:5]
+    
+    checkHatrick1 = GamePlay.objects.all().order_by('-gameplayID')[0:1]
+    checkHatrick2 = GamePlay.objects.all().order_by('-gameplayID')[1:2]
+    temp1, temp2 = "", ""
+    for x in checkHatrick1:
+        temp1 = x.playerID
 
+    for x in checkHatrick2:
+        temp2 = x.playerID
+
+    isHat = False
+    if temp1 == temp2:
+        isHat = True
     gameplayPlayerwise = GamePlay.objects.filter(gameID=gameid).values('playerID', 'gameID').order_by(
         'playerID', 'gameID').annotate(total=Sum('score'))
     return render(request=request, template_name="index.html", context={
@@ -32,7 +44,8 @@ def homepage(request, gameid):
         'lastWinnerName': lastgameWinnerName,
         'lastWinnerScore': lastgameWinnerScore,
         'gameActive': gameActive,
-        'gameflow': gameflow
+        'gameflow': gameflow,
+        'isHat' : isHat
     })
 
 

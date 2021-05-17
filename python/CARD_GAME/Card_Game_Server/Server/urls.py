@@ -19,5 +19,5 @@ from .views import homepage, winner
 
 urlpatterns = [
     path('<int:gameid>/', homepage, name="gameplay"),
-    path('<int:gameid>/<int:winnerID>/<int:score>/<int:total>', winner, name="gameplay")
+    path('<int:gameid>/<int:winnerID>/<int:score>/<int:total>', winner, name="gameplay1")
 ]

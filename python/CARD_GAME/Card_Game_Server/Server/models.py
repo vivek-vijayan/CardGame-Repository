@@ -31,6 +31,7 @@ class GamePlay(models.Model):
     gameID = models.ForeignKey(GameSet, on_delete=models.CASCADE)
     playerID = models.ForeignKey(GamePlayer, on_delete=models.CASCADE)
     score = models.IntegerField()
+    winon = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return (str(self.gameplayID) + " -> Game ID : " + str(self.gameID) + " --> Player ID : " + str(self.playerID))
