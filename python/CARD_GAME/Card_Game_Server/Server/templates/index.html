@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4"
+                    <div class="col-sm-5"
                         style="border: 5px solid rgb(255, 186, 102); border-radius: 20px; padding: 10px; margin: 10px;">
                         <h2
                             style="color: rgb(255, 237, 214); padding-left: 30px; padding-top: 10px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
@@ -89,7 +89,7 @@
                                 {% for x in players %}
                                 <tr>
                                     <td>
-                                        <span style="padding-left: 10px;">{{ x.playerName }}</span>
+                                        <span style="padding-left: 10px;">{{ x.playerID }} -{{ x.playerName }}</span>
                                     </td>
                                     <td>
                                         <span style="position: static; padding-left: 50px;"> ⭐️ x {{ x.Star }} </span>
@@ -106,7 +106,7 @@
                                 {% for x in gameplayPlayerwise %}
                                 <tr>
                                     <td>
-                                        <span style="padding-left: 10px;"></span>
+                                        <span style="padding-left: 10px;">{{ x.playerID}}</span>
                                     </td>
                                     <td>
                                         <span style="position: static; padding-left: 20px; padding-right: 50px;"> ⛳️
