@@ -7,7 +7,7 @@ from django.db.models import F
 
 
 def homepage(request, gameid):
-    players = GamePlayer.objects.all()
+    players = GamePlayer.objects.all().order_by('playerID')
     lastgameWinnerName, lastgameWinnerScore = None, None
     lastwinner = GamePlay.objects.all().order_by('-gameplayID')[:1]
     gameActive = None
@@ -21,7 +21,8 @@ def homepage(request, gameid):
         lastgameWinnerScore = x.score
         lastgameWinnerName = x.playerID
 
-    gameflow = GamePlay.objects.all().order_by('-gameplayID')[:5]
+    gameflow = GamePlay.objects.filter(
+        gameID=gameid).order_by('-gameplayID')[:5]
     
     checkHatrick1 = GamePlay.objects.all().order_by('-gameplayID')[0:1]
     checkHatrick2 = GamePlay.objects.all().order_by('-gameplayID')[1:2]
@@ -67,7 +68,7 @@ def winner(request, gameid,  winnerID, score, total):
         winnername = x
     g.save()
 
-    if total >= 50:
+    if int(total + score) >= 50:
         GamePlayer.objects.filter(playerID = winnerID).update(Star = F('Star') + 1)
         GameSet.objects.filter(gameID=gameid).update(gameOver = True)
 
